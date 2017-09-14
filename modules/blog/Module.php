@@ -1,16 +1,21 @@
 <?php
 
-namespace app\modules\blog;
+namespace modules\blog;
 
 /**
- * blog module definition class
+ * site module definition class
  */
 class Module extends \yii\base\Module
 {
     /**
      * @inheritdoc
      */
-    public $controllerNamespace = 'app\modules\blog\controllers';
+    public $controllerNamespace;
+
+    /**
+     * @var boolean.
+     */
+    public $isBackend;
 
     /**
      * @inheritdoc
@@ -19,6 +24,12 @@ class Module extends \yii\base\Module
     {
         parent::init();
 
-        // custom initialization code goes here
+        if ($this->isBackend === true) {
+            $this->controllerNamespace = 'modules\blog\controllers\backend';
+            $this->setViewPath('@modules/blog/views/backend');
+        } else {
+            $this->controllerNamespace = 'modules\blog\controllers\frontend';
+            $this->setViewPath('@modules/blog/views/frontend');
+        }
     }
 }
