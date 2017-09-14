@@ -23,16 +23,17 @@ class CategoryController extends ActiveController
 
 	public function actionIndex()
 	{
-		var_dump(Category::find()->published());
-        return new ActiveDataProvider([
-            'query' => Category::find()->published()
-				//->where(['status' => 1]),
-        ]);
+		$query = Category::find()
+			->published()
+			->asArray();
+		$rows = $query->all();
+		
+		return Category::getTree($rows);
 	}
 	
 	public function actionCreate()
 	{
-		$model = new Category();	
+		$model = new Category();
 		$model->load(Yii::$app->request->post(), '');
 		$model->image = UploadedFile::getInstanceByName('image');
 		$model->status = 1;
@@ -41,5 +42,7 @@ class CategoryController extends ActiveController
 		}
 		return $model;
 	}
+	
+	
 	
 }

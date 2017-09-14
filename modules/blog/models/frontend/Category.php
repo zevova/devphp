@@ -97,6 +97,21 @@ class Category extends \yii\db\ActiveRecord
         } else {
             return false;
         }
+    }
+		
+	public static function getTree($arrs, $parent = null)
+    {
+        $data = [];
+        foreach ($arrs as $arr) {
+            if ($arr['parent_id'] == $parent){
+                $child = self::getTree($arrs, $arr['id']);
+				if (count($child) > 0) {
+					$arr['child'] = $child;
+				}
+                $data[] = $arr;
+            }
+        }
+		return $data;
     }	
 	
 }
