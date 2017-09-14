@@ -9,6 +9,10 @@ use yii\behaviors\SluggableBehavior;
 
 class Article extends \yii\db\ActiveRecord
 {
+
+    public $category;
+    public $tag;
+
     /**
      * @inheritdoc
      */
@@ -23,11 +27,12 @@ class Article extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'content', 'user_id', 'status'], 'required'],
+            [['title', 'content', 'user_id', 'status', 'category'], 'required'],
             [['alias'], 'unique'],
             [['alias', 'title', 'content'], 'string'],
 			[['image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg'],
             [['user_id', 'created_at', 'updated_at', 'status'], 'integer'],
+            [['category', 'tag'], 'safe'],
         ];
     }
 
@@ -46,6 +51,8 @@ class Article extends \yii\db\ActiveRecord
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
             'status' => Yii::t('app', 'Status'),
+            'category' => Yii::t('app', 'Category'),
+            'tag' => Yii::t('app', 'Tag'),
         ];
     }
 	

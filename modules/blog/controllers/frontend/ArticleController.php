@@ -7,6 +7,9 @@ use yii\web\UploadedFile;
 use yii\helpers\Inflector;
 use yii\data\ActiveDataProvider;
 use modules\blog\models\frontend\Article; 
+use modules\blog\models\frontend\ArticleCategory; 
+use modules\blog\models\frontend\Tag; 
+use modules\blog\models\frontend\ArticleTag; 
 
 class ArticleController extends ActiveController
 {
@@ -30,14 +33,44 @@ class ArticleController extends ActiveController
 	
 	public function actionCreate()
 	{
-		$model = new Article();	
-		$model->load(Yii::$app->request->post(), '');
-		$model->image = UploadedFile::getInstanceByName('image');
-		$model->status = 1;
-		if ($model->upload()) {
-			$model->save();
+		$article = new Article();		
+		$article->load(Yii::$app->request->post(), '');
+		$article->image = UploadedFile::getInstanceByName('image');
+		$article->status = 1;
+		if ($article->upload()) {
+			if ($article->save()) {
+				self::saveCategory($article->category, $article->id);
+				self::saveTag($article->tag, $article->id);
+			}
 		}
-		return $model;
+		return $article;
 	}
+	
+	protected function saveCategory($categories, $articleId)
+	{
+		foreach ($categories as $category) {
+			$articleCategory = new ArticleCategory();
+			$articleCategory->article_id = $articleId;
+			$articleCategory->category_id = $category;
+			$articleCategory->save();					
+		}
+	}
+	
+	protected function saveTag($tags, $articleId)
+	{
+		foreach (explode(',', $tags) as $tag) {
+			$tagId = self::CreateTag();
+			$articleCategory = new ArticleTag();
+			$articleCategory->article_id = $articleId;
+			$articleCategory->category_id = $tagId;
+			$articleCategory->save();					
+		}
+	}
+	
+	protected function CreateTag()
+	{
+		$articleCategory = new Tag();
+		$articleCategory->save();					
+	}	
 	
 }

@@ -46,6 +46,7 @@ return [
             'rules' => [
 				['class' => 'yii\rest\UrlRule', 'controller' => 'blog/article', 'pluralize' => false],
 				['class' => 'yii\rest\UrlRule', 'controller' => 'blog/category', 'pluralize' => false],			
+				['class' => 'yii\rest\UrlRule', 'controller' => 'blog/tag', 'pluralize' => false],			
             ],
         ],
     ],
