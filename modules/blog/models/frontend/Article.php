@@ -9,10 +9,13 @@ use yii\behaviors\SluggableBehavior;
 
 use modules\blog\models\frontend\Category;
 use modules\blog\models\frontend\Tag;
+use modules\blog\models\frontend\query\ArticleQuery;
 
 class Article extends \yii\db\ActiveRecord
 {
-
+	const STATUS_INACTIVE = 0;
+	const STATUS_ACTIVE = 1;
+	
     public $category;
     public $tag;
 
@@ -79,6 +82,11 @@ class Article extends \yii\db\ActiveRecord
         ];
     }
 	
+	public static function find()
+    {
+        return new ArticleQuery(get_called_class());
+    }
+	
 	public function upload()
     {
         if ($this->validate()) {
@@ -92,16 +100,18 @@ class Article extends \yii\db\ActiveRecord
         }
     }
 	
-	public function getCategories()
-    {
+    public function getCategories()
+	{
         return $this->hasMany(Category::className(), ['id' => 'category_id'])
-            ->viaTable('article_category', ['article_id' => 'id']);
+            ->viaTable('article_category', ['article_id' => 'id'])
+			->select(['id', 'title']);
     }
 
     public function getTags()
     {
         return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
-            ->viaTable('article_tag', ['article_id' => 'id']);
+            ->viaTable('article_tag', ['article_id' => 'id'])
+			->select(['id', 'title']);
     }
 	
 }

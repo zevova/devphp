@@ -3,25 +3,16 @@ namespace modules\blog\models\frontend\query;
 
 use yii\db\ActiveQuery;
 
-use modules\blog\models\frontend\Category;
+use modules\blog\models\frontend\Article;
 
-class CategoryQuery extends ActiveQuery
+class ArticleQuery extends ActiveQuery
 {
     /**
      * @return $this
      */
     public function active()
     {
-        $this->andWhere(['{{%category}}.status' => Category::STATUS_ACTIVE]);
-        return $this;
-    }
-	
-    /**
-     * @return $this
-     */
-    public function noParents()
-    {
-        $this->andWhere('{{%category}}.parent_id IS NULL');
+        $this->andWhere(['{{%article}}.status' => Article::STATUS_ACTIVE]);
         return $this;
     }
 	
@@ -33,4 +24,5 @@ class CategoryQuery extends ActiveQuery
     {
         return $this->active();
     }
+	
 }

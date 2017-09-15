@@ -25,13 +25,12 @@ class ArticleController extends ActiveController
 
 	public function actionIndex()
 	{
-        return new ActiveDataProvider([
+		var_dump($this);
+		return new ActiveDataProvider([
             'query' => Article::find()
-				->with([ 
-					'categories',
-					'tags',
-				])
-				->where(['status' => 1]),
+				->with('tags', 'categories')
+				->published()
+				->asArray()
         ]);
 	}
 	

@@ -13,6 +13,7 @@ return [
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [
+			'baseUrl' => '',
             'csrfParam' => '_csrf-frontend',
 			'parsers' => [
 				//'application/json' => 'yii\web\JsonParser',
@@ -44,24 +45,23 @@ return [
 			'enableStrictParsing' => true,
             'showScriptName' => false,
 			'rules' => [
-				//['class' => 'yii\rest\UrlRule', 'controller' => ['article' => 'blog/article'], 'pluralize' => false],
 				[
 					'class' => 'yii\rest\UrlRule', 
 					'controller' => [
-						'article' => 'blog/article',
-						'category' => 'blog/category',
-						'tag' => 'blog/tag',						
+						'blog/article' => 'blog/article',
+						'blog/category' => 'blog/category',
+						'blog/tag' => 'blog/tag',						
 					],
 				],
 				[
 					'class' => 'yii\rest\UrlRule',
 					'controller' => ['article' => 'blog/article'],
-					'prefix' => 'category/<categoryId:\d+>',
+					'prefix' => 'blog/category/<categoryId:\d+>',
 				],
 				[
 					'class' => 'yii\rest\UrlRule',
 					'controller' => ['article' => 'blog/article'],
-					'prefix' => 'tag/<tagId:\d+>',
+					'prefix' => 'blog/tag/<tagId:\d+>',
 				],
 			],
         ],
