@@ -56,12 +56,12 @@ return [
 				[
 					'class' => 'yii\rest\UrlRule',
 					'controller' => ['article' => 'blog/article'],
-					'prefix' => 'blog/category/<categoryId:\d+>',
+					'prefix' => 'blog/category/<category_id:\d+>',
 				],
 				[
 					'class' => 'yii\rest\UrlRule',
 					'controller' => ['article' => 'blog/article'],
-					'prefix' => 'blog/tag/<tagId:\d+>',
+					'prefix' => 'blog/tag/<tag_id:\d+>',
 				],
 			],
         ],

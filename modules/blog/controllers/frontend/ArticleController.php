@@ -25,7 +25,6 @@ class ArticleController extends ActiveController
 
 	public function actionIndex()
 	{
-		var_dump($this);
 		return new ActiveDataProvider([
             'query' => Article::find()
 				->with('tags', 'categories')
