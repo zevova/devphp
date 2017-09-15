@@ -7,8 +7,9 @@ use yii\web\UploadedFile;
 use yii\helpers\Inflector;
 use yii\data\ActiveDataProvider;
 use modules\blog\models\frontend\Article; 
-use modules\blog\models\frontend\ArticleCategory; 
+use modules\blog\models\frontend\Category; 
 use modules\blog\models\frontend\Tag; 
+use modules\blog\models\frontend\ArticleCategory; 
 use modules\blog\models\frontend\ArticleTag; 
 
 class ArticleController extends ActiveController
@@ -19,18 +20,68 @@ class ArticleController extends ActiveController
 	public function actions()
 	{
 		$actions = parent::actions();
-		unset($actions['index'], $actions['create']);
+		unset(
+			$actions['index'],
+			$actions['view'], 
+			$actions['create']
+		);
 		return $actions;
 	}
 
-	public function actionIndex()
-	{
+	public function actionIndex($categoryId = null, $tagId = null)
+	{	
+		$query = Article::find();
+		if ($categoryId !== null) {
+			$query = $query->leftJoin('article_category', 'article_category.article_id = id')
+			->where(['article_category.category_id' => $categoryId]);
+		}
+		if ($tagId !== null) {
+			$query = $query->leftJoin('article_tag', 'article_tag.article_id = id')
+			->where(['article_tag.tag_id' => $tagId]);
+		}
+		$query = $query->with([
+			'categories' => function ($query) {
+				$query->andWhere(['status' => Category::STATUS_ACTIVE]);
+			},
+			'tags' => function ($query) {
+				$query->andWhere(['status' => Tag::STATUS_ACTIVE]);
+			},
+			])
+			->published()
+			->asArray();
+		
 		return new ActiveDataProvider([
-            'query' => Article::find()
-				->with('tags', 'categories')
-				->published()
-				->asArray()
+            'query' => $query,
+			'sort' => ['defaultOrder' => ['title' => SORT_ASC,]
+			]
         ]);
+	}
+	
+	public function actionView($id, $categoryId = null, $tagId = null)
+	{	
+		$query = Article::find();
+		if ($categoryId !== null) {
+			$query = $query->leftJoin('article_category', 'article_category.article_id = id')
+			->where(['article_category.category_id' => $categoryId]);
+		}
+		if ($tagId !== null) {
+			$query = $query->leftJoin('article_tag', 'article_tag.article_id = id')
+			->where(['article_tag.tag_id' => $tagId]);
+		}
+		
+		$query = $query->with([
+			'categories' => function ($query) {
+				$query->andWhere(['status' => Category::STATUS_ACTIVE]);
+			},
+			'tags' => function ($query) {
+				$query->andWhere(['status' => Tag::STATUS_ACTIVE]);
+			},
+			])
+			->where(['id' => $id])
+			->published()
+			->asArray()
+			->one();
+        return $query;
 	}
 	
 	public function actionCreate()

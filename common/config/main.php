@@ -6,6 +6,11 @@ return [
             'class' => 'yii\caching\FileCache',
         ],
     ],
+	'controllerMap' => [
+		'migration' => [
+			'class' => 'bizley\migration\controllers\MigrationController',
+		],
+	],
 	'modules' => [
         'blog' => [
             'class' => 'modules\blog\Module',

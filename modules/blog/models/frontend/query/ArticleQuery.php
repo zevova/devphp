@@ -16,10 +16,6 @@ class ArticleQuery extends ActiveQuery
         return $this;
     }
 	
-    /**
-     * [published description]
-     * @return [type] [description]
-     */
     public function published()
     {
         return $this->active();

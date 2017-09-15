@@ -4,8 +4,51 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2099dd55ad0ea56853b9f025aa8e2928",
+    "content-hash": "a87ece6b821f1ea84674e515d26efaab",
     "packages": [
+        {
+            "name": "bizley/migration",
+            "version": "2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bizley/yii2-migration.git",
+                "reference": "173034f97955f8a66e3aed5891e5f3876dea0cde"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bizley/yii2-migration/zipball/173034f97955f8a66e3aed5891e5f3876dea0cde",
+                "reference": "173034f97955f8a66e3aed5891e5f3876dea0cde",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "~2.0.8"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "bizley\\migration\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Pawel Bizley Brzozowski",
+                    "email": "pawel@positive.codes"
+                }
+            ],
+            "description": "Migration generator for Yii 2.",
+            "keywords": [
+                "console",
+                "generator",
+                "migrate",
+                "migration",
+                "yii2"
+            ],
+            "time": "2017-05-14T12:58:48+00:00"
+        },
         {
             "name": "bower-asset/bootstrap",
             "version": "v3.3.7",
