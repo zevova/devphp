@@ -27,6 +27,10 @@ class ArticleController extends ActiveController
 	{
         return new ActiveDataProvider([
             'query' => Article::find()
+				->with([ 
+					'categories',
+					'tags',
+				])
 				->where(['status' => 1]),
         ]);
 	}
@@ -48,29 +52,41 @@ class ArticleController extends ActiveController
 	
 	protected function saveCategory($categories, $articleId)
 	{
+		$categories = is_array($categories) ? $categories : [$categories];
 		foreach ($categories as $category) {
-			$articleCategory = new ArticleCategory();
-			$articleCategory->article_id = $articleId;
-			$articleCategory->category_id = $category;
-			$articleCategory->save();					
+			$model = new ArticleCategory();
+			$model->article_id = $articleId;
+			$model->category_id = $category;
+			$model->save();					
 		}
 	}
 	
 	protected function saveTag($tags, $articleId)
 	{
 		foreach (explode(',', $tags) as $tag) {
-			$tagId = self::CreateTag();
-			$articleCategory = new ArticleTag();
-			$articleCategory->article_id = $articleId;
-			$articleCategory->category_id = $tagId;
-			$articleCategory->save();					
+			$tagId = self::CreateTag($tag);
+			$model = new ArticleTag();
+			$model->article_id = $articleId;
+			$model->tag_id = $tagId;
+			$model->save();
 		}
 	}
 	
-	protected function CreateTag()
+	protected function CreateTag($title)
 	{
-		$articleCategory = new Tag();
-		$articleCategory->save();					
+		$model = Tag::find()
+			->where([
+				'title' => $title,
+			])
+			->one();
+		if ($model == null) {
+			$model = new Tag();
+			$model->title = $title;
+			$model->status = 1;
+			$model->save();
+			return $model->id;
+		}
+		return $model->id;
 	}	
 	
 }

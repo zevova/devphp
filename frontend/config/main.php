@@ -15,7 +15,7 @@ return [
         'request' => [
             'csrfParam' => '_csrf-frontend',
 			'parsers' => [
-				'application/json' => 'yii\web\JsonParser',
+				//'application/json' => 'yii\web\JsonParser',
 			],
         ],
         'user' => [
@@ -43,11 +43,27 @@ return [
             'enablePrettyUrl' => true,
 			'enableStrictParsing' => true,
             'showScriptName' => false,
-            'rules' => [
-				['class' => 'yii\rest\UrlRule', 'controller' => 'blog/article', 'pluralize' => false],
-				['class' => 'yii\rest\UrlRule', 'controller' => 'blog/category', 'pluralize' => false],			
-				['class' => 'yii\rest\UrlRule', 'controller' => 'blog/tag', 'pluralize' => false],			
-            ],
+			'rules' => [
+				//['class' => 'yii\rest\UrlRule', 'controller' => ['article' => 'blog/article'], 'pluralize' => false],
+				[
+					'class' => 'yii\rest\UrlRule', 
+					'controller' => [
+						'article' => 'blog/article',
+						'category' => 'blog/category',
+						'tag' => 'blog/tag',						
+					],
+				],
+				[
+					'class' => 'yii\rest\UrlRule',
+					'controller' => ['article' => 'blog/article'],
+					'prefix' => 'category/<categoryId:\d+>',
+				],
+				[
+					'class' => 'yii\rest\UrlRule',
+					'controller' => ['article' => 'blog/article'],
+					'prefix' => 'tag/<tagId:\d+>',
+				],
+			],
         ],
     ],
     'params' => $params,

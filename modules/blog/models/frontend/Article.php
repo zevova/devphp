@@ -7,6 +7,9 @@ use yii\db\Expression;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\SluggableBehavior;
 
+use modules\blog\models\frontend\Category;
+use modules\blog\models\frontend\Tag;
+
 class Article extends \yii\db\ActiveRecord
 {
 
@@ -87,6 +90,18 @@ class Article extends \yii\db\ActiveRecord
         } else {
             return false;
         }
+    }
+	
+	public function getCategories()
+    {
+        return $this->hasMany(Category::className(), ['id' => 'category_id'])
+            ->viaTable('article_category', ['article_id' => 'id']);
+    }
+
+    public function getTags()
+    {
+        return $this->hasMany(Tag::className(), ['id' => 'tag_id'])
+            ->viaTable('article_tag', ['article_id' => 'id']);
     }
 	
 }
